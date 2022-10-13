@@ -14,7 +14,6 @@ export const useAuthlogin = (callback: ILoginCallback) => {
         dispatch(setAccessToken(accessToken));
         dispatch(setLogin(true));
         callback.onSuccess && callback.onSuccess();
-        
       },
       onError: () => {
         callback.onError && callback.onError();
@@ -22,4 +21,3 @@ export const useAuthlogin = (callback: ILoginCallback) => {
     }),
   };
 };
-

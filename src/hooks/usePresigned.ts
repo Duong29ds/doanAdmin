@@ -4,7 +4,9 @@ import { presignedUrl } from 'src/common/constants/services';
 
 export function usePresigned() {
   const [isUploading, setIsUploading] = useState(false);
-  async function handleUpload(file?: File): Promise<Partial<PresignedResponse> | undefined> {
+  async function handleUpload(
+    file?: File
+  ): Promise<Partial<PresignedResponse> | undefined> {
     setIsUploading(true);
     let thumbnailRes;
     if (file) {

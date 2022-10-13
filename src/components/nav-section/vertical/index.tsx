@@ -9,7 +9,11 @@ import NavList from './NavList';
 
 // ----------------------------------------------------------------------
 
-export default function NavSectionVertical({ navConfig, isCollapse, ...other }: NavSectionProps) {
+export default function NavSectionVertical({
+  navConfig,
+  isCollapse,
+  ...other
+}: NavSectionProps) {
   const { translate } = useLocales();
 
   return (

@@ -11,11 +11,11 @@ export default function Radio(theme: Theme) {
           svg: {
             fontSize: 24,
             '&[font-size=small]': {
-              fontSize: 20
-            }
-          }
-        }
-      }
-    }
+              fontSize: 20,
+            },
+          },
+        },
+      },
+    },
   };
 }

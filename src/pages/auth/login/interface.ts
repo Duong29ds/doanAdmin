@@ -1,9 +1,9 @@
-export type IAuth =  {
-    email:string;
-    password:string;
-}
+export type IAuth = {
+  email: string;
+  password: string;
+};
 
 export type ILoginCallback = {
-    onSuccess: VoidFunction;
-    onError: VoidFunction;
-  };
+  onSuccess: VoidFunction;
+  onError: VoidFunction;
+};

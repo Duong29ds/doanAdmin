@@ -16,12 +16,16 @@ export async function presignUrl(file: any, axiosInstant?: AxiosStatic) {
       const headerFileds = presignHeaderInfo?.data?.presign?.fields || {};
       const id = presignHeaderInfo?.data?.fileInfo?.id;
       const formData = new FormData();
-      Object.keys(headerFileds).forEach((header) => formData.append(header, headerFileds[header]));
+      Object.keys(headerFileds).forEach((header) =>
+        formData.append(header, headerFileds[header])
+      );
       formData.append('file', file);
 
       await (axiosInstant || axios).post(urlPostImng, formData);
       const fileUrl =
-        presignHeaderInfo?.data?.presign?.url + '/' + presignHeaderInfo?.data?.fileInfo.id;
+        presignHeaderInfo?.data?.presign?.url +
+        '/' +
+        presignHeaderInfo?.data?.fileInfo.id;
       return { ...presignHeaderInfo?.data?.fileInfo, url: fileUrl, id };
     } catch (error) {
       console.log(error);

@@ -33,9 +33,10 @@ export default function UploadMultiFile({
   sx,
   ...other
 }: UploadMultiFileProps) {
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
-    ...other,
-  });
+  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } =
+    useDropzone({
+      ...other,
+    });
 
   return (
     <Box sx={{ width: '100%', ...sx }}>

@@ -93,7 +93,12 @@ export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
 
           <List disablePadding>
             {navConfig.map((link) => (
-              <MenuMobileItem key={link.title} item={link} isOpen={open} onOpen={handleOpen} />
+              <MenuMobileItem
+                key={link.title}
+                item={link}
+                isOpen={open}
+                onOpen={handleOpen}
+              />
             ))}
           </List>
         </Scrollbar>
@@ -136,7 +141,8 @@ function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
                   backgroundPosition: 'center',
                   bgcolor: 'background.neutral',
                   backgroundRepeat: 'no-repeat',
-                  backgroundImage: 'url(/assets/illustrations/illustration_dashboard.png)',
+                  backgroundImage:
+                    'url(/assets/illustrations/illustration_dashboard.png)',
                   '& > *:not(.MuiTouchRipple-root)': { display: 'none' },
                 },
               }}

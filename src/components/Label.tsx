@@ -6,7 +6,14 @@ import { ColorSchema } from '../theme/palette';
 
 // ----------------------------------------------------------------------
 
-type LabelColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+type LabelColor =
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error';
 
 type LabelVariant = 'filled' | 'outlined' | 'ghost';
 

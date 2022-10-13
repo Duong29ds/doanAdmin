@@ -10,7 +10,9 @@ export default function TreeView(theme: Theme) {
       defaultProps: {
         defaultCollapseIcon: <TreeViewCollapseIcon sx={{ width: 20, height: 20 }} />,
         defaultExpandIcon: <TreeViewExpandIcon sx={{ width: 20, height: 20 }} />,
-        defaultEndIcon: <TreeViewEndIcon sx={{ color: 'text.secondary', width: 20, height: 20 }} />,
+        defaultEndIcon: (
+          <TreeViewEndIcon sx={{ color: 'text.secondary', width: 20, height: 20 }} />
+        ),
       },
     },
     MuiTreeItem: {

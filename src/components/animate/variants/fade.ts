@@ -22,22 +22,38 @@ export const varFade = (props?: VariantsType) => {
     inUp: {
       initial: { y: distance, opacity: 0 },
       animate: { y: 0, opacity: 1, transition: varTranEnter({ durationIn, easeIn }) },
-      exit: { y: distance, opacity: 0, transition: varTranExit({ durationOut, easeOut }) },
+      exit: {
+        y: distance,
+        opacity: 0,
+        transition: varTranExit({ durationOut, easeOut }),
+      },
     },
     inDown: {
       initial: { y: -distance, opacity: 0 },
       animate: { y: 0, opacity: 1, transition: varTranEnter({ durationIn, easeIn }) },
-      exit: { y: -distance, opacity: 0, transition: varTranExit({ durationOut, easeOut }) },
+      exit: {
+        y: -distance,
+        opacity: 0,
+        transition: varTranExit({ durationOut, easeOut }),
+      },
     },
     inLeft: {
       initial: { x: -distance, opacity: 0 },
       animate: { x: 0, opacity: 1, transition: varTranEnter({ durationIn, easeIn }) },
-      exit: { x: -distance, opacity: 0, transition: varTranExit({ durationOut, easeOut }) },
+      exit: {
+        x: -distance,
+        opacity: 0,
+        transition: varTranExit({ durationOut, easeOut }),
+      },
     },
     inRight: {
       initial: { x: distance, opacity: 0 },
       animate: { x: 0, opacity: 1, transition: varTranEnter({ durationIn, easeIn }) },
-      exit: { x: distance, opacity: 0, transition: varTranExit({ durationOut, easeOut }) },
+      exit: {
+        x: distance,
+        opacity: 0,
+        transition: varTranExit({ durationOut, easeOut }),
+      },
     },
 
     // OUT
@@ -48,22 +64,38 @@ export const varFade = (props?: VariantsType) => {
     },
     outUp: {
       initial: { y: 0, opacity: 1 },
-      animate: { y: -distance, opacity: 0, transition: varTranEnter({ durationIn, easeIn }) },
+      animate: {
+        y: -distance,
+        opacity: 0,
+        transition: varTranEnter({ durationIn, easeIn }),
+      },
       exit: { y: 0, opacity: 1, transition: varTranExit({ durationOut, easeOut }) },
     },
     outDown: {
       initial: { y: 0, opacity: 1 },
-      animate: { y: distance, opacity: 0, transition: varTranEnter({ durationIn, easeIn }) },
+      animate: {
+        y: distance,
+        opacity: 0,
+        transition: varTranEnter({ durationIn, easeIn }),
+      },
       exit: { y: 0, opacity: 1, transition: varTranExit({ durationOut, easeOut }) },
     },
     outLeft: {
       initial: { x: 0, opacity: 1 },
-      animate: { x: -distance, opacity: 0, transition: varTranEnter({ durationIn, easeIn }) },
+      animate: {
+        x: -distance,
+        opacity: 0,
+        transition: varTranEnter({ durationIn, easeIn }),
+      },
       exit: { x: 0, opacity: 1, transition: varTranExit({ durationOut, easeOut }) },
     },
     outRight: {
       initial: { x: 0, opacity: 1 },
-      animate: { x: distance, opacity: 0, transition: varTranEnter({ durationIn, easeIn }) },
+      animate: {
+        x: distance,
+        opacity: 0,
+        transition: varTranEnter({ durationIn, easeIn }),
+      },
       exit: { x: 0, opacity: 1, transition: varTranExit({ durationOut, easeOut }) },
     },
   };

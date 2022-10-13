@@ -9,27 +9,27 @@ export default function Switch(theme: Theme) {
     MuiSwitch: {
       styleOverrides: {
         thumb: {
-          boxShadow: theme.customShadows.z1
+          boxShadow: theme.customShadows.z1,
         },
         track: {
           opacity: 1,
-          backgroundColor: theme.palette.grey[500]
+          backgroundColor: theme.palette.grey[500],
         },
         switchBase: {
           left: 0,
           right: 'auto',
           '&:not(:.Mui-checked)': {
-            color: theme.palette.grey[isLight ? 100 : 300]
+            color: theme.palette.grey[isLight ? 100 : 300],
           },
           '&.Mui-checked.Mui-disabled, &.Mui-disabled': {
-            color: theme.palette.grey[isLight ? 400 : 600]
+            color: theme.palette.grey[isLight ? 400 : 600],
           },
           '&.Mui-disabled+.MuiSwitch-track': {
             opacity: 1,
-            backgroundColor: `${theme.palette.action.disabledBackground} !important`
-          }
-        }
-      }
-    }
+            backgroundColor: `${theme.palette.action.disabledBackground} !important`,
+          },
+        },
+      },
+    },
   };
 }

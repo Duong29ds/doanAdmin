@@ -8,9 +8,9 @@ export default function Avatar(theme: Theme) {
       styleOverrides: {
         colorDefault: {
           color: theme.palette.text.secondary,
-          backgroundColor: theme.palette.grey[400]
-        }
-      }
+          backgroundColor: theme.palette.grey[400],
+        },
+      },
     },
     MuiAvatarGroup: {
       styleOverrides: {
@@ -20,10 +20,10 @@ export default function Avatar(theme: Theme) {
           '&:first-of-type': {
             fontSize: 14,
             color: theme.palette.primary.main,
-            backgroundColor: theme.palette.primary.lighter
-          }
-        }
-      }
-    }
+            backgroundColor: theme.palette.primary.lighter,
+          },
+        },
+      },
+    },
   };
 }

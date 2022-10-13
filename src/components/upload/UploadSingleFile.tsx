@@ -32,10 +32,11 @@ export default function UploadSingleFile({
   sx,
   ...other
 }: UploadProps) {
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
-    multiple: false,
-    ...other,
-  });
+  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } =
+    useDropzone({
+      multiple: false,
+      ...other,
+    });
 
   return (
     <Box sx={{ width: '100%', ...sx }}>

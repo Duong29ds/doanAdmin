@@ -89,7 +89,9 @@ export default function MainHeader() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {isDesktop && <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
+          {isDesktop && (
+            <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+          )}
 
           <Button
             variant="contained"
@@ -100,7 +102,9 @@ export default function MainHeader() {
             Purchase Now
           </Button>
 
-          {!isDesktop && <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
+          {!isDesktop && (
+            <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+          )}
         </Container>
       </ToolbarStyle>
 

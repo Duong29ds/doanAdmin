@@ -17,7 +17,9 @@ export default function useResponsive(query: Query, key?: Key, start?: Start, en
 
   const mediaDown = useMediaQuery(theme.breakpoints.down(key as Key));
 
-  const mediaBetween = useMediaQuery(theme.breakpoints.between(start as Start, end as End));
+  const mediaBetween = useMediaQuery(
+    theme.breakpoints.between(start as Start, end as End)
+  );
 
   const mediaOnly = useMediaQuery(theme.breakpoints.only(key as Breakpoint));
 

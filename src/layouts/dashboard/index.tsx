@@ -57,7 +57,10 @@ export default function DashboardLayout() {
   if (verticalLayout) {
     return (
       <>
-        <DashboardHeader onOpenSidebar={() => setOpen(true)} verticalLayout={verticalLayout} />
+        <DashboardHeader
+          onOpenSidebar={() => setOpen(true)}
+          verticalLayout={verticalLayout}
+        />
 
         {isDesktop ? (
           <NavbarHorizontal />

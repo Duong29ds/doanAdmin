@@ -60,7 +60,7 @@ const ArrowStyle = styled('span')<ArrowStyleProps>(({ arrow, theme }) => {
       zIndex: 1,
       width: SIZE,
       height: SIZE,
-      content: '\'\'',
+      content: "''",
       display: 'block',
       position: 'absolute',
       transform: 'rotate(-135deg)',
@@ -72,7 +72,12 @@ const ArrowStyle = styled('span')<ArrowStyleProps>(({ arrow, theme }) => {
     ...(arrow === 'top-right' && { ...topStyle, right: 20 }),
     // Bottom
     ...(arrow === 'bottom-left' && { ...bottomStyle, left: 20 }),
-    ...(arrow === 'bottom-center' && { ...bottomStyle, left: 0, right: 0, margin: 'auto' }),
+    ...(arrow === 'bottom-center' && {
+      ...bottomStyle,
+      left: 0,
+      right: 0,
+      margin: 'auto',
+    }),
     ...(arrow === 'bottom-right' && { ...bottomStyle, right: 20 }),
     // Left
     ...(arrow === 'left-top' && { ...leftStyle, top: 20 }),

@@ -26,7 +26,9 @@ export default function SettingFullscreen() {
       size="large"
       variant="outlined"
       color={fullscreen ? 'primary' : 'inherit'}
-      startIcon={<Iconify icon={fullscreen ? 'ic:round-fullscreen-exit' : 'ic:round-fullscreen'} />}
+      startIcon={
+        <Iconify icon={fullscreen ? 'ic:round-fullscreen-exit' : 'ic:round-fullscreen'} />
+      }
       onClick={toggleFullScreen}
       sx={{
         fontSize: 14,
