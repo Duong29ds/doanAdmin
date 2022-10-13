@@ -1,12 +1,12 @@
 // routes
-import Router from './routes';
+import Router from './common/routes';
 // theme
-import ThemeProvider from './theme';
+import ThemeProvider from './common/theme';
 // components
-import ThemeSettings from './components/settings';
-import ScrollToTop from './components/ScrollToTop';
-import NotistackProvider from './components/NotistackProvider';
-import MotionLazyContainer from './components/animate/MotionLazyContainer';
+import ThemeSettings from './common/components/settings';
+import ScrollToTop from './common/components/ScrollToTop';
+import NotistackProvider from './common/components/NotistackProvider';
+import MotionLazyContainer from './common/components/animate/MotionLazyContainer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 // ----------------------------------------------------------------------

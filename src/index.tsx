@@ -1,5 +1,5 @@
 // i18n
-import './locales/i18n';
+import './common/locales/i18n';
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
@@ -12,12 +12,12 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 // redux
-import { store, persistor } from './redux/store';
+import { store, persistor } from './common/redux/store';
 // contexts
-import { SettingsProvider } from './contexts/SettingsContext';
-import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
+import { SettingsProvider } from './common/contexts/SettingsContext';
+import { CollapseDrawerProvider } from './common/contexts/CollapseDrawerContext';
 
-import { AuthProvider } from './contexts/JWTContext';
+import { AuthProvider } from './common/contexts/JWTContext';
 
 //
 import App from './App';

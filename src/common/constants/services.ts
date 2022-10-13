@@ -1,5 +1,5 @@
 import axios, { AxiosStatic } from 'axios';
-import axiosInstance from 'src/utils/axios';
+import axiosInstance from 'src/common/utils/axios';
 import { API_PRESIGNED } from './apis';
 import { PresignedResponse } from './common.interfaces';
 

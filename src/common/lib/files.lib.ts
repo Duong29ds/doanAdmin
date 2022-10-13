@@ -1,7 +1,7 @@
 import axios, { AxiosStatic } from 'axios';
 // import { Thumbnail } from "../interfaces/common.interfaces";
 import { API_PRESIGN_URL } from '../constants/apis';
-import axiosInstance from 'src/utils/axios';
+import axiosInstance from 'src/common/utils/axios';
 
 export async function presignUrl(file: any, axiosInstant?: AxiosStatic) {
   if (file) {
