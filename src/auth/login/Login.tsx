@@ -92,8 +92,8 @@ export default function Login() {
             </Stack>
 
             <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>admin@tesosoft.com</strong> / password :
-              <strong> Aabb1234</strong>
+              Use email : <strong>duong1@ptit.edu.vn</strong> / password :
+              <strong>1234567</strong>
             </Alert>
 
             <LoginForm />

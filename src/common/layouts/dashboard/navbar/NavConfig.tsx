@@ -49,6 +49,56 @@ const navConfig = [
       { title: 'kanban', path: PATH_DASHBOARD.general.app, icon: ICONS.kanban },
     ],
   },
+  {
+    subheader: 'dashboard',
+    items: [
+      {
+        title: 'product',
+        path: PATH_DASHBOARD.general.product.root,
+        icon: ICONS.ecommerce,
+        children: [
+          {
+            title: 'product list',
+            path: PATH_DASHBOARD.general.product.root,
+          },
+          {
+            title: 'add product',
+            path: PATH_DASHBOARD.general.product.new,
+          },
+        ],
+      },
+      {
+        title: 'supplier',
+        path: PATH_DASHBOARD.general.supplier.root,
+        icon: ICONS.ecommerce,
+        children: [
+          {
+            title: 'supplier list',
+            path: PATH_DASHBOARD.general.supplier.root,
+          },
+          {
+            title: 'add supplier',
+            path: PATH_DASHBOARD.general.supplier.new,
+          },
+        ],
+      },
+      {
+        title: 'portfolio',
+        path: PATH_DASHBOARD.general.portfolio.root,
+        icon: ICONS.ecommerce,
+        children: [
+          {
+            title: 'portfolio list',
+            path: PATH_DASHBOARD.general.portfolio.root,
+          },
+          {
+            title: 'add portfolio',
+            path: PATH_DASHBOARD.general.portfolio.new,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export default navConfig;

@@ -9,8 +9,7 @@ import { PATH_DASHBOARD } from './common/routes/paths';
 // ----------------------------------------------------------------------
 // This for call http API from https client. You can check here: https://stackoverflow.com/questions/60938091/make-api-request-to-http-endpoint-from-aws-amplify-deployed-https-ssl-client
 export const HOST_API =
-  process.env.REACT_APP_HOST_API_KEY ||
-  'https://cors-everywhere.herokuapp.com/http://vief-dev-loadbalancer-2024646.ap-southeast-1.elb.amazonaws.com';
+  'http://localhost:6789';
 
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -22,18 +21,6 @@ export const FIREBASE_API = {
   appId: process.env.REACT_APP_FIREBASE_APPID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
-
-export const COGNITO_API = {
-  userPoolId: process.env.REACT_APP_AWS_COGNITO_USER_POOL_ID,
-  clientId: process.env.REACT_APP_AWS_COGNITO_CLIENT_ID,
-};
-
-export const AUTH0_API = {
-  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  domain: process.env.REACT_APP_AUTH0_DOMAIN,
-};
-
-export const MAPBOX_API = process.env.REACT_APP_MAPBOX_API;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.app; // as '/dashboard/app'

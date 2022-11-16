@@ -37,6 +37,21 @@ export const PATH_PAGE = {
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   general: {
+    product: {
+      root: path(ROOTS_DASHBOARD, '/product'),
+      new: path(ROOTS_DASHBOARD, '/product/new'),
+      edit: (id: string) => path(ROOTS_DASHBOARD, `/product/${id}/edit`),
+    },
+    supplier: {
+      root: path(ROOTS_DASHBOARD, '/supplier'),
+      new: path(ROOTS_DASHBOARD, '/supplier/new'),
+      edit: (id: string) => path(ROOTS_DASHBOARD, `/supplier/${id}/edit`),
+    },
+    portfolio: {
+      root: path(ROOTS_DASHBOARD, '/portfolio'),
+      new: path(ROOTS_DASHBOARD, '/portfolio/new'),
+      edit: (id: number) => path(ROOTS_DASHBOARD, `/portfolio/${id}/edit`),
+    },
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
