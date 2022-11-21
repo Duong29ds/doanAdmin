@@ -40,12 +40,12 @@ export const PATH_DASHBOARD = {
     product: {
       root: path(ROOTS_DASHBOARD, '/product'),
       new: path(ROOTS_DASHBOARD, '/product/new'),
-      edit: (id: string) => path(ROOTS_DASHBOARD, `/product/${id}/edit`),
+      edit: (id: number) => path(ROOTS_DASHBOARD, `/product/${id}/edit`),
     },
     supplier: {
       root: path(ROOTS_DASHBOARD, '/supplier'),
       new: path(ROOTS_DASHBOARD, '/supplier/new'),
-      edit: (id: string) => path(ROOTS_DASHBOARD, `/supplier/${id}/edit`),
+      edit: (id: number) => path(ROOTS_DASHBOARD, `/supplier/${id}/edit`),
     },
     portfolio: {
       root: path(ROOTS_DASHBOARD, '/portfolio'),

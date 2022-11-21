@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   FormProvider,
@@ -26,47 +26,30 @@ import {
 import Label from 'src/common/components/Label';
 import { IFormPortfolioValuesProps } from 'src/portfolio/\binterface';
 import { initialValues, styleButton, styleInput } from '../../constants';
+import { useQuery } from 'react-query';
+import { useSnackbar } from 'notistack';
+import { useUpdatePortf } from 'src/portfolio/hook/useUpdatePortf';
+import { fetchingPortfolioById } from 'src/portfolio/service';
+import { useNavigate, useParams } from 'react-router-dom';
+import ToolbarCustom from 'src/portfolio/portfolio-list/components/table/ToolbarCustom';
+import { handleGetIDList } from 'src/supply/utils';
+import { PATH_DASHBOARD } from 'src/common/routes/paths';
 
 const columns = [
-  { name: 'product_image', title: 'Image' },
-  { name: 'product_name', title: 'Name' },
-  { name: 'product_price', title: 'Price' },
-  { name: 'product_post_service', title: 'Post Service' },
-  { name: 'product_type', title: 'Type' },
-];
-const rows = [
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
+  { name: 'name', title: 'Name' },
+  { name: 'description', title: 'Description' },
+  { name: 'total', title: 'Total' },
+  { name: 'price', title: 'Price' },
+  { name: 'post_service', title: 'Post Service' },
+  { name: 'import_date', title: 'Import Date' },
 ];
 
 export default function EditPortfolio() {
-  const [selectionProduct, setSelectionProduct] = useState([]);
+  const navigate = useNavigate();
+  const [selection, setSelection] = useState<any[]>([]);
+  const [rows, setRows] = useState<any[]>([]);
+  const params = useParams();
+  const id = params?.id;
   const methods = useForm<IFormPortfolioValuesProps>({
     defaultValues: initialValues,
   });
@@ -74,10 +57,62 @@ export default function EditPortfolio() {
   const {
     formState: { isSubmitting },
     setValue,
+    getValues,
   } = methods;
+
+  const { data, error, isError, refetch, isSuccess } = useQuery([`portfolio/${id}`], () =>
+    fetchingPortfolioById(id)
+  );
+
+  console.log(data, 'data');
+
+  const { enqueueSnackbar } = useSnackbar();
+  const onSuccess = () => {
+    enqueueSnackbar('Sửa danh mục sản phẩm thành công!', {
+      variant: 'success',
+      autoHideDuration: 1000,
+    });
+    refetch();
+    setSelection([]);
+  };
+  const onError = () => {
+    enqueueSnackbar('Sửa thất bại', {
+      variant: 'error',
+    });
+    methods.reset();
+  };
+
+  const { mutate } = useUpdatePortf({ onSuccess, onError });
+
+  useEffect(() => {
+    if (isSuccess) {
+      methods.reset(data.data);
+      setRows(data.data.products);
+    }
+  }, [isSuccess, data?.data]);
+
+  const handleSubmitEdit = () => {
+    const idListProduct = rows
+      // .filter((item) => !selection.includes(item.id))
+      .map((item) => item.id);
+    const dataSubmitEdit = { ...getValues(), idListProduct: idListProduct };
+    mutate(dataSubmitEdit);
+  };
 
   const handleClickReset = () => {
     methods.reset();
+  };
+
+  const handleDeleteRows = (idlist: number[]) => {
+    const idListDelete = handleGetIDList(rows, selection);
+    const idListProduct = rows
+      .filter((item) => !idListDelete.includes(item.id))
+      .map((item) => item.id);
+    mutate({ id, idListProduct });
+  };
+
+  const handleCancel = () => {
+    navigate(PATH_DASHBOARD.general.portfolio.root);
   };
 
   return (
@@ -97,11 +132,13 @@ export default function EditPortfolio() {
             gap: '20px',
           }}
         >
-          <RHFTextField name="supplier_name" label="Name" sx={styleInput} />
-          <RHFTextField name="supplier_description" label="Description" sx={styleInput} />
+          <RHFTextField name="name" label="Name" sx={styleInput} />
+          <RHFTextField name="description" label="Description" sx={styleInput} />
         </Box>
         <Box sx={{ display: 'flex', gap: '10px', padding: '0px 10px' }}>
-          <Button sx={styleButton}>Edit</Button>
+          <Button sx={styleButton} onClick={handleSubmitEdit}>
+            Edit
+          </Button>
           <Button sx={styleButton} onClick={handleClickReset}>
             Cancel
           </Button>
@@ -111,12 +148,10 @@ export default function EditPortfolio() {
         <Grid rows={rows} columns={columns}>
           <SearchState />
           <SelectionState
-            selection={selectionProduct}
-            onSelectionChange={
-              setSelectionProduct as (selection: (string | number)[]) => void
-            }
+            selection={selection}
+            onSelectionChange={setSelection as (selection: (string | number)[]) => void}
           />
-          <Toolbar />
+          <Toolbar rootComponent={() => ToolbarCustom({ selection, handleDeleteRows })} />
           <IntegratedSelection />
           <IntegratedFiltering />
           <VirtualTable />

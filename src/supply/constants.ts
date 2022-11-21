@@ -1,6 +1,6 @@
 export const initialValues={
-    supplier_name: "",
-    supplier_description: "",
+    name: "",
+    description: "",
 }
 
 export const styleInput={width:'100%'}

@@ -1,29 +1,48 @@
 import { Box, Button } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { IFormPortfolioValuesProps } from 'src/portfolio/\binterface';
+import { rowsSelector } from 'src/portfolio/portfolio.slice';
 import { styleButton } from 'src/product/constants';
+import { handleGetIDList } from 'src/supply/utils';
 
 export default function ToolbarCustom({
   selection,
   handleEditRow,
+  handleDeleteRows,
   ...props
 }: {
   selection: number[];
-  handleEditRow: (id: number) => void;
+  handleEditRow?: (id: number) => void;
+  handleDeleteRows?: (idlist: Array<number>) => void;
 }) {
-  const disabledEdit = selection.length > 1;
+  const rows = useSelector(rowsSelector);
+  const disabledEdit = selection.length !== 1;
+  const disabledDelete = selection.length === 0;
+
   return (
     <Box sx={{ display: 'flex', gap: '10px', padding: '0px 10px', height: '50px' }}>
-      <Button>Add</Button>
-      <Button
-        disabled={disabledEdit}
-        onClick={() => {
-          console.log(selection, 'selection');
-          handleEditRow(selection[0]);
-        }}
-      >
-        Edit
-      </Button>
+      {handleEditRow ? (
+        <Button
+          disabled={disabledEdit}
+          onClick={() => {
+            handleEditRow?.(rows[selection[0]].id);
+          }}
+        >
+          Edit
+        </Button>
+      ) : null}
+      {handleDeleteRows ? (
+        <Button
+          disabled={disabledDelete}
+          onClick={() => {
+            const idListDelete = handleGetIDList(rows, selection);
+            handleDeleteRows?.(idListDelete);
+          }}
+        >
+          Delete
+        </Button>
+      ) : null}
     </Box>
   );
 }

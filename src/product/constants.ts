@@ -1,11 +1,13 @@
 export const initialValues={
-    product_name: "",
-    product_description: "",
-    product_price_import: 0,
-    product_price_show: 0,
-    product_date_import:new Date('2022-02-02'),
-    product_post_service: "",
-    product_image: "",
+    name: "",
+    description: "",
+    portfolio:'',
+    supplier: '',
+    import_date:new Date('2022-02-02'),
+    post_service: "",
+    total:0,
+    price:0,
+    images: [],
 }
 
 export const styleInput={width:'100%'}

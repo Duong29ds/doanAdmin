@@ -11,6 +11,8 @@ import GuestGuard from '../guards/GuestGuard';
 // config
 // components
 import LoadingScreen from '../components/LoadingScreen';
+import EditSupply from 'src/supply/edit-supply/components/EditSupply';
+import EditProduct from 'src/product/edit-product/components/EditProduct';
 
 // ----------------------------------------------------------------------
 
@@ -60,6 +62,8 @@ export default function Router() {
         { path: 'portfolio', element: <PortfolioList /> },
         { path: 'portfolio/new', element: <AddPortfolio /> },
         { path: 'portfolio/:id/edit', element: <EditPortfolio /> },
+        { path: 'supplier/:id/edit', element: <EditSupply /> },
+        { path: 'product/:id/edit', element: <EditProduct /> },
         { path: '404', element: <Page404 /> },
         { path: '403', element: <Page403 /> },
         { path: '*', element: <Navigate to="/404" replace /> },

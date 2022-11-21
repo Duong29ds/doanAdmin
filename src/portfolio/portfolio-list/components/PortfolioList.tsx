@@ -1,4 +1,4 @@
-import React, { ComponentType, useState } from 'react';
+import React, { ComponentType, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Grid,
@@ -19,44 +19,58 @@ import { Box, Button } from '@mui/material';
 import { styleButton } from 'src/product/constants';
 import { DropzoneRootProps } from 'react-dropzone';
 import ToolbarCustom from './table/ToolbarCustom';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PATH_DASHBOARD } from 'src/common/routes/paths';
+import { useSelector } from 'react-redux';
+import { rowsSelector, setRows } from 'src/portfolio/portfolio.slice';
+import { useSnackbar } from 'notistack';
+import { dispatch } from 'src/common/redux/store';
+import { useDeletePortf } from 'src/portfolio/hook/useDeletePortf';
+import { useQuery } from 'react-query';
+import { fetchingPortfolios } from 'src/portfolio/service';
 
 const columns = [
-  { name: 'supplier_name', title: 'Name' },
-  { name: 'supplier_description', title: 'Description' },
-];
-const rows = [
-  {
-    id: 0,
-    supplier_name: 'Key board',
-    supplier_description: '1000000',
-  },
-  {
-    id: 1,
-    supplier_name: 'Key board',
-    supplier_description: '1000000',
-  },
-  {
-    id: 2,
-    supplier_name: 'Mouse',
-    supplier_description: '1000000',
-  },
-  {
-    id: 3,
-    supplier_name: 'Monitor',
-    supplier_description: '1000000',
-  },
-  {
-    id: 4,
-    supplier_name: 'Tree',
-    supplier_description: '1000000',
-  },
+  { name: 'name', title: 'Name' },
+  { name: 'description', title: 'Description' },
 ];
 
 export default function PortfolioList() {
   const navigate = useNavigate();
   const [selection, setSelection] = useState([]);
+
+  const rows = useSelector(rowsSelector);
+
+  const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
+    ['portfolios'],
+    fetchingPortfolios
+  );
+
+  const { enqueueSnackbar } = useSnackbar();
+  const onSuccess = () => {
+    enqueueSnackbar('Xoá nhà cung cấp thành công!', {
+      variant: 'success',
+      autoHideDuration: 1000,
+    });
+    refetch();
+    setSelection([]);
+  };
+  const onError = () => {
+    enqueueSnackbar('Xoá thất bại', {
+      variant: 'error',
+    });
+  };
+
+  const { mutate } = useDeletePortf({ onSuccess, onError });
+
+  useEffect(() => {
+    if (isSuccess) dispatch(setRows(data.data));
+  }, [isSuccess, data?.data]);
+
+  const handleDeleteRows = (idlist: number[]) => {
+    mutate({
+      idlist,
+    });
+  };
 
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.general.portfolio.edit(id));
@@ -71,7 +85,11 @@ export default function PortfolioList() {
             selection={selection}
             onSelectionChange={setSelection as (selection: (string | number)[]) => void}
           />
-          <Toolbar rootComponent={() => ToolbarCustom({ selection, handleEditRow })} />
+          <Toolbar
+            rootComponent={() =>
+              ToolbarCustom({ selection, handleEditRow, handleDeleteRows })
+            }
+          />
           <IntegratedSelection />
           <IntegratedFiltering />
           <VirtualTable />

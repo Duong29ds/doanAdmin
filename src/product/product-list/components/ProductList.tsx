@@ -1,4 +1,4 @@
-import React, { ComponentType, useState } from 'react';
+import React, { ComponentType, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Grid,
@@ -19,50 +19,70 @@ import { Box, Button } from '@mui/material';
 import { styleButton } from 'src/product/constants';
 import ToolbarCustom from './table/ToolbarCustom';
 import { DropzoneRootProps } from 'react-dropzone';
+import { useQuery } from 'react-query';
+import { useSnackbar } from 'notistack';
+import { dispatch } from 'src/common/redux/store';
+import { useNavigate } from 'react-router-dom';
+import { PATH_DASHBOARD } from 'src/common/routes/paths';
+import { fetchingProducts } from 'src/product/service';
+import { rowsSelector, setRows } from 'src/product/product.slide';
+import { useSelector } from 'react-redux';
+import { useDeleteProd } from 'src/product/hook/useDeleteProd';
 
 const columns = [
-  { name: 'product_image', title: 'Iamge' },
-  { name: 'product_name', title: 'Name' },
-  { name: 'product_price', title: 'Price' },
-  { name: 'product_post_service', title: 'Post Service' },
-  { name: 'product_type', title: 'Type' },
-];
-const rows = [
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
-  {
-    product_image: '',
-    product_name: 'Key board',
-    product_price: '1000000',
-    product_post_service: 'no post service',
-    product_type: 'Key board',
-  },
+  { name: 'id', title: 'Id' },
+  { name: 'name', title: 'Name' },
+  { name: 'description', title: 'Description' },
+  { name: 'total', title: 'Total' },
+  { name: 'price', title: 'Price' },
+  { name: 'post_service', title: 'Post Service' },
 ];
 
 export default function ProductList() {
   const [selection, setSelection] = useState([]);
+  const navigate = useNavigate();
+  const rows = useSelector(rowsSelector);
+
+  const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
+    ['products'],
+    fetchingProducts
+  );
+
+  const { enqueueSnackbar } = useSnackbar();
+  const onSuccess = () => {
+    enqueueSnackbar('Xoá nhà cung cấp thành công!', {
+      variant: 'success',
+      autoHideDuration: 1000,
+    });
+    refetch();
+    setSelection([]);
+  };
+  const onError = () => {
+    enqueueSnackbar('Xoá thất bại', {
+      variant: 'error',
+    });
+  };
+
+  const { mutate } = useDeleteProd({ onSuccess, onError });
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setRows(data.data));
+    }
+  }, [isSuccess, data?.data]);
+
+  const handleEditRow = (id: number) => {
+    navigate(PATH_DASHBOARD.general.product.edit(id));
+  };
+
+  const handleDeleteRows = (idlist: number[]) => {
+    mutate({
+      idlist,
+    });
+  };
   const ProductImageColumn = (props: any) => (
     <DataTypeProvider
-      for={['product_image']}
+      for={['image']}
       formatterComponent={() => {
         return (
           <img
@@ -76,6 +96,7 @@ export default function ProductList() {
       {...props}
     />
   );
+
   return (
     <>
       <Paper>
@@ -85,7 +106,11 @@ export default function ProductList() {
             selection={selection}
             onSelectionChange={setSelection as (selection: (string | number)[]) => void}
           />
-          <Toolbar rootComponent={() => ToolbarCustom({ selection })} />
+          <Toolbar
+            rootComponent={() =>
+              ToolbarCustom({ selection, handleEditRow, handleDeleteRows })
+            }
+          />
           <ProductImageColumn />
           <IntegratedSelection />
           <IntegratedFiltering />

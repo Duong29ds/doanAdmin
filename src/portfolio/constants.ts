@@ -1,6 +1,7 @@
 export const initialValues={
-    portfolio_name: "",
-    portfolio_description: "",
+    name: "",
+    description: "",
+    products:[]
 }
 
 export const styleInput={width:'100%'}

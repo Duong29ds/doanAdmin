@@ -1,4 +1,4 @@
-import React, { ComponentType, useState } from 'react';
+import React, { ComponentType, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Grid,
@@ -19,36 +19,62 @@ import { Box, Button } from '@mui/material';
 import { styleButton } from 'src/product/constants';
 import ToolbarCustom from './table/ToolbarCustom';
 import { DropzoneRootProps } from 'react-dropzone';
+import { dispatch } from 'src/common/redux/store';
+import { useQuery } from 'react-query';
+import { fetchingSuppliers } from 'src/supply/service';
+import { useNavigate } from 'react-router-dom';
+import { PATH_DASHBOARD } from 'src/common/routes/paths';
+import { rowsSelector, setRows } from 'src/supply/supplier.slice';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
+import { useDeleteSup } from 'src/supply/hook/useDeleteSup';
 
 const columns = [
-  { name: 'supplier_name', title: 'Name' },
-  { name: 'supplier_description', title: 'Description' },
-];
-const rows = [
-  {
-    supplier_name: 'Key board',
-    supplier_description: '1000000',
-  },
-  {
-    supplier_name: 'Key board',
-    supplier_description: '1000000',
-  },
-  {
-    supplier_name: 'Key board',
-    supplier_description: '1000000',
-  },
-  {
-    supplier_name: 'Key board',
-    supplier_description: '1000000',
-  },
-  {
-    supplier_name: 'Key board',
-    supplier_description: '1000000',
-  },
+  { name: 'name', title: 'Name' },
+  { name: 'description', title: 'Description' },
 ];
 
 export default function SupplyList() {
   const [selection, setSelection] = useState([]);
+  const rows = useSelector(rowsSelector);
+  const navigate = useNavigate();
+
+  const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
+    ['suppliers'],
+    fetchingSuppliers
+  );
+
+  const { enqueueSnackbar } = useSnackbar();
+  const onSuccess = () => {
+    enqueueSnackbar('Xoá nhà cung cấp thành công!', {
+      variant: 'success',
+      autoHideDuration: 1000,
+    });
+    refetch();
+    setSelection([]);
+  };
+  const onError = () => {
+    enqueueSnackbar('Xoá thất bại', {
+      variant: 'error',
+    });
+  };
+
+  const { mutate } = useDeleteSup({ onSuccess, onError });
+
+  useEffect(() => {
+    if (isSuccess) dispatch(setRows(data.data));
+  }, [isSuccess, data?.data]);
+
+  const handleEditRow = (id: number) => {
+    navigate(PATH_DASHBOARD.general.supplier.edit(id));
+  };
+
+  const handleDeleteRows = (idlist: number[]) => {
+    mutate({
+      idlist,
+    });
+  };
+
   return (
     <>
       <Paper>
@@ -58,7 +84,15 @@ export default function SupplyList() {
             selection={selection}
             onSelectionChange={setSelection as (selection: (string | number)[]) => void}
           />
-          <Toolbar rootComponent={() => ToolbarCustom({ selection })} />
+          <Toolbar
+            rootComponent={() =>
+              ToolbarCustom({
+                selection,
+                handleEditRow,
+                handleDeleteRows,
+              })
+            }
+          />
           <IntegratedSelection />
           <IntegratedFiltering />
           <VirtualTable />
