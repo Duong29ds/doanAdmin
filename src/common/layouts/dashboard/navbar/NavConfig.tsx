@@ -39,14 +39,11 @@ const navConfig = [
     subheader: 'app',
     items: [
       {
-        title: 'mail',
+        title: 'System statistic',
         path: PATH_DASHBOARD.general.app,
-        icon: ICONS.mail,
+        icon: ICONS.blog,
         info: <Label color="error">+32</Label>,
-      },
-      { title: 'chat', path: PATH_DASHBOARD.general.app, icon: ICONS.chat },
-      { title: 'calendar', path: PATH_DASHBOARD.general.app, icon: ICONS.calendar },
-      { title: 'kanban', path: PATH_DASHBOARD.general.app, icon: ICONS.kanban },
+      }
     ],
   },
   {
@@ -94,6 +91,17 @@ const navConfig = [
           {
             title: 'add portfolio',
             path: PATH_DASHBOARD.general.portfolio.new,
+          },
+        ],
+      },
+      {
+        title: 'order',
+        path: PATH_DASHBOARD.general.order.root,
+        icon: ICONS.ecommerce,
+        children: [
+          {
+            title: 'portfolio list',
+            path: PATH_DASHBOARD.general.order.root,
           },
         ],
       },

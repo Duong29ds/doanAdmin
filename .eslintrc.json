@@ -14,8 +14,10 @@
   "parserOptions": {
     "project": ["**/tsconfig.json"]
   },
-  "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier","unused-imports"],
   "rules": {
+    "no-unused-imports":"off",
+    "no-unused-vars": "off", 
     "react/react-in-jsx-scope": "off",
     "camelcase": "off",
     "spaced-comment": "error",
@@ -26,6 +28,7 @@
     "react/display-name": "off",
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": "off",
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "unused-imports/no-unused-imports": "warn"
   }
 }

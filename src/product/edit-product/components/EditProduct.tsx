@@ -1,7 +1,6 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,7 +8,6 @@ import {
   FormProvider,
   RHFSelect,
   RHFTextField,
-  RHFUploadSingleFile,
 } from 'src/common/components/hook-form';
 import Label from 'src/common/components/Label';
 import { PATH_DASHBOARD } from 'src/common/routes/paths';

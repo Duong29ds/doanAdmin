@@ -93,7 +93,7 @@ export default function Login() {
 
             <Alert severity="info" sx={{ mb: 3 }}>
               Use email : <strong>duong1@ptit.edu.vn</strong> / password :
-              <strong>1234567</strong>
+              <strong>abc123!</strong>
             </Alert>
 
             <LoginForm />

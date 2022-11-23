@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { ComponentType, useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Grid,
@@ -13,41 +13,37 @@ import {
   SearchState,
   IntegratedSelection,
   IntegratedFiltering,
-  DataTypeProvider,
 } from '@devexpress/dx-react-grid';
 import ToolbarCustom from './table/ToolbarCustom';
-import { useQuery } from 'react-query';
-import { useSnackbar } from 'notistack';
 import { dispatch } from 'src/common/redux/store';
+import { useQuery } from 'react-query';
+import { fetchingSuppliers } from 'src/supply/service';
 import { useNavigate } from 'react-router-dom';
 import { PATH_DASHBOARD } from 'src/common/routes/paths';
-import { fetchingProducts } from 'src/product/service';
-import { rowsSelector, setRows } from 'src/product/product.slide';
+import { rowsSelector, setRows } from 'src/supply/supplier.slice';
 import { useSelector } from 'react-redux';
-import { useDeleteProd } from 'src/product/hook/useDeleteProd';
+import { useSnackbar } from 'notistack';
+import { useDeleteSup } from 'src/supply/hook/useDeleteSup';
+import { fetchingOrders } from 'src/order/service';
 
 const columns = [
-  { name: 'id', title: 'Id' },
   { name: 'name', title: 'Name' },
   { name: 'description', title: 'Description' },
-  { name: 'total', title: 'Total' },
-  { name: 'price', title: 'Price' },
-  { name: 'post_service', title: 'Post Service' },
 ];
 
-export default function ProductList() {
+export default function OrderList() {
   const [selection, setSelection] = useState([]);
-  const navigate = useNavigate();
   const rows = useSelector(rowsSelector);
+  const navigate = useNavigate();
 
   const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
-    ['products'],
-    fetchingProducts
+    ['orders'],
+    fetchingOrders
   );
 
   const { enqueueSnackbar } = useSnackbar();
   const onSuccess = () => {
-    enqueueSnackbar('Xoá nhà cung cấp thành công!', {
+    enqueueSnackbar('Xoá đơn hàng thành công!', {
       variant: 'success',
       autoHideDuration: 1000,
     });
@@ -60,16 +56,16 @@ export default function ProductList() {
     });
   };
 
-  const { mutate } = useDeleteProd({ onSuccess, onError });
+  const { mutate } = useDeleteSup({ onSuccess, onError });
 
   useEffect(() => {
-    if (isSuccess) {
-      dispatch(setRows(data.data));
-    }
+    if (isSuccess) dispatch(setRows(data.data));
   }, [isSuccess, data?.data]);
 
+  console.log(data,'data')
+
   const handleEditRow = (id: number) => {
-    navigate(PATH_DASHBOARD.general.product.edit(id));
+    navigate(PATH_DASHBOARD.general.supplier.edit(id));
   };
 
   const handleDeleteRows = (idlist: number[]) => {
@@ -77,22 +73,6 @@ export default function ProductList() {
       idlist,
     });
   };
-  const ProductImageColumn = (props: any) => (
-    <DataTypeProvider
-      for={['image']}
-      formatterComponent={() => {
-        return (
-          <img
-            src="https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/297244164_1460435901054767_4188384556076195340_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=0debeb&_nc_ohc=13RKnEjg_7EAX-ylFVn&tn=_9eR_sHOcoFXFs8A&_nc_ht=scontent.fhan3-3.fna&oh=00_AfAOyTgMV_lLA_lKDjG4rNKTpFHwKvH0WuQ6yezx3QOLXQ&oe=636256F6"
-            srcSet="https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/297244164_1460435901054767_4188384556076195340_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=0debeb&_nc_ohc=13RKnEjg_7EAX-ylFVn&tn=_9eR_sHOcoFXFs8A&_nc_ht=scontent.fhan3-3.fna&oh=00_AfAOyTgMV_lLA_lKDjG4rNKTpFHwKvH0WuQ6yezx3QOLXQ&oe=636256F6"
-            alt="product-image"
-            loading="lazy"
-          />
-        );
-      }}
-      {...props}
-    />
-  );
 
   return (
     <>
@@ -105,10 +85,13 @@ export default function ProductList() {
           />
           <Toolbar
             rootComponent={() =>
-              ToolbarCustom({ selection, handleEditRow, handleDeleteRows })
+              ToolbarCustom({
+                selection,
+                handleEditRow,
+                handleDeleteRows,
+              })
             }
           />
-          <ProductImageColumn />
           <IntegratedSelection />
           <IntegratedFiltering />
           <VirtualTable />

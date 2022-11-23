@@ -13,6 +13,8 @@ import GuestGuard from '../guards/GuestGuard';
 import LoadingScreen from '../components/LoadingScreen';
 import EditSupply from 'src/supply/edit-supply/components/EditSupply';
 import EditProduct from 'src/product/edit-product/components/EditProduct';
+import SystemStatisitc from 'src/system-statistic/components/SystemStatisitc';
+import OrderList from 'src/order/order-list/components/OrderList';
 
 // ----------------------------------------------------------------------
 
@@ -64,9 +66,11 @@ export default function Router() {
         { path: 'portfolio/:id/edit', element: <EditPortfolio /> },
         { path: 'supplier/:id/edit', element: <EditSupply /> },
         { path: 'product/:id/edit', element: <EditProduct /> },
+        { path: 'order', element: <OrderList /> },
         { path: '404', element: <Page404 /> },
         { path: '403', element: <Page403 /> },
         { path: '*', element: <Navigate to="/404" replace /> },
+        { path: 'statistic', element: <SystemStatisitc /> },
       ],
     },
 
