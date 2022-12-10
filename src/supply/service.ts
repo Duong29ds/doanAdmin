@@ -2,6 +2,7 @@ import axios from 'src/common/utils/axios';
 import { IAddSupplier, IDeleteSupplier, IUpdateSupplier } from './\binterface';
 
 export const addSup = (params: IAddSupplier) => {
+  console.log(params,'params');
   return axios.post('supplier/new', params);
 };
 

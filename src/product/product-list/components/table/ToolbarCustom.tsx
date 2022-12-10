@@ -1,7 +1,6 @@
 import { Box, Button } from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { styleButton } from 'src/product/constants';
 import { rowsSelector } from 'src/product/product.slide';
 import { handleGetIDList } from 'src/supply/utils';
 
@@ -9,11 +8,13 @@ export default function ToolbarCustom({
   selection,
   handleEditRow,
   handleDeleteRows,
+  handleOpenPopupPortfolio,
   ...props
 }: {
   selection: number[];
   handleEditRow: (id: number) => void;
   handleDeleteRows: (idlist: Array<number>) => void;
+  handleOpenPopupPortfolio: (idlist: Array<number>) => void;
 }) {
   const rows = useSelector(rowsSelector);
   const disabledEdit = selection.length !== 1;
@@ -38,6 +39,15 @@ export default function ToolbarCustom({
         }}
       >
         Delete
+      </Button>
+      <Button
+        disabled={disabledDelete}
+        onClick={() => {
+          const idListAddToPortfolio = handleGetIDList(rows, selection);
+          handleOpenPopupPortfolio(idListAddToPortfolio);
+        }}
+      >
+        Add to Portfolio
       </Button>
     </Box>
   );

@@ -13,24 +13,23 @@ import { dispatch } from 'src/common/redux/store';
 import { PATH_AUTH, PATH_DASHBOARD } from 'src/common/routes/paths';
 import {
   FormProvider,
-  RHFCheckbox,
   RHFTextField,
 } from '../../../common/components/hook-form';
 import Iconify from '../../../common/components/Iconify';
 import { defaultValues } from '../constants';
-import { useAuthlogin } from '../hook/useLogin';
-import { IFormLoginValuesProps } from '../interface/interface';
+import { IFormSignUpValuesProps } from '../interface/interface';
 import { setShowPassword, showPasswordSelector } from '../login.slice';
-import { LoginSchema } from '../schema/login.schema';
+import { SignupSchema } from '../schema/login.schema';
+import { useAuthSignup } from '../hook/useSignup';
 
 // ----------------------------------------------------------------------
 
-export default function LoginForm() {
+export default function SignupForm() {
   const navigate = useNavigate();
   const showPassword = useSelector(showPasswordSelector);
 
-  const methods = useForm<IFormLoginValuesProps>({
-    resolver: yupResolver(LoginSchema),
+  const methods = useForm<IFormSignUpValuesProps>({
+    resolver: yupResolver(SignupSchema),
     defaultValues,
   });
 
@@ -40,37 +39,57 @@ export default function LoginForm() {
   } = methods;
   const { enqueueSnackbar } = useSnackbar();
   const onSuccess = () => {
-    enqueueSnackbar('Đăng nhập thành công', {
+    enqueueSnackbar('Đăng ký thành công', {
       variant: 'success',
       autoHideDuration: 1000,
     });
   };
-
+  
   const onError = () => {
-    enqueueSnackbar('Đăng nhập thất bại ! xin kiểm tra lại thông tin', {
+    enqueueSnackbar('Đăng ký thất bại ! xin kiểm tra lại thông tin', {
       variant: 'error',
     });
   };
 
-  const { mutate, isSuccess } = useAuthlogin({ onSuccess, onError });
+  const { mutate, isSuccess } = useAuthSignup({ onSuccess, onError });
   useEffect(() => {
     if (isSuccess) navigate(PATH_DASHBOARD.general.app);
   }, [isSuccess]);
-  const onSubmit = (data: IFormLoginValuesProps) => {
-    mutate({ email: data.email, password: data.password });
+  const onSubmit = (data: IFormSignUpValuesProps) => {
+    mutate({name:data.name, phone_number:data.phonenumber,address:data.address, email: data.email, password: data.password });
   };
 
-  const handleNavigateSignUp =()=>{
-    navigate(PATH_AUTH.signup);
+  const handleBack=()=>{
+    navigate(PATH_AUTH.login);
   }
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
+        <RHFTextField name="name" label="Name" />
+        <RHFTextField name="phonenumber" label="Phone Number" />
+        <RHFTextField name="address" label="Address" />
         <RHFTextField name="email" label="Email address" />
         <RHFTextField
           name="password"
           label="Password"
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => dispatch(setShowPassword(!showPassword))}
+                  edge="end"
+                >
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <RHFTextField
+          name="confirm_password"
+          label="Password confirm"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -93,8 +112,7 @@ export default function LoginForm() {
         justifyContent="space-between"
         sx={{ my: 2 }}
       >
-        <RHFCheckbox name="remember" label="Remember me" />
-        <Button onClick={handleNavigateSignUp}>Sign up</Button>
+        <Button onClick={handleBack}>Back to sign in</Button>
       </Stack>
 
       <LoadingButton
@@ -104,7 +122,7 @@ export default function LoginForm() {
         variant="contained"
         loading={isSubmitting}
       >
-        Login
+        Sign up
       </LoadingButton>
     </FormProvider>
   );

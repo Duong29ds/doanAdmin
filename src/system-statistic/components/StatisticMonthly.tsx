@@ -41,7 +41,8 @@ export default function StatisticMonthly() {
         </TotalMonthStyle>
         <TotalMonthStyle>
            <Title>Phần trăm giao động</Title>
-           <Value>Income</Value>
+           <Value>Tăng 20%
+           </Value>
         </TotalMonthStyle>
     </ContentStyle>
   )

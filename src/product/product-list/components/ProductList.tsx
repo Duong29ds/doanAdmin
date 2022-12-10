@@ -25,6 +25,13 @@ import { fetchingProducts } from 'src/product/service';
 import { rowsSelector, setRows } from 'src/product/product.slide';
 import { useSelector } from 'react-redux';
 import { useDeleteProd } from 'src/product/hook/useDeleteProd';
+import Popup from 'src/common/components/Popup';
+import { FormProvider, RHFSelect } from 'src/common/components/hook-form';
+import { fetchingPortfolios } from 'src/portfolio/service';
+import { IOptions } from 'src/product/interface';
+import { useForm } from 'react-hook-form';
+import { Box, Button } from '@mui/material';
+import { useAddProd2Portf } from 'src/product/hook/useAddProd2Portf';
 
 const columns = [
   { name: 'id', title: 'Id' },
@@ -35,10 +42,23 @@ const columns = [
   { name: 'post_service', title: 'Post Service' },
 ];
 
+type IForm = {
+  portfolio: string;
+};
+
 export default function ProductList() {
   const [selection, setSelection] = useState([]);
+  const [idListAddtoPortf, setIdListAddToPortf] = useState<number[]>([]);
+  const [portfolioOptions, setdataPortOptions] = useState<IOptions[]>([]);
+  const [openPopup, setOpenPopup] = useState(false);
   const navigate = useNavigate();
   const rows = useSelector(rowsSelector);
+
+  const methods = useForm<IForm>({
+    defaultValues: {},
+  });
+
+  const {getValues}=methods;
 
   const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
     ['products'],
@@ -60,7 +80,27 @@ export default function ProductList() {
     });
   };
 
+  const onSuccess2 = () => {
+    enqueueSnackbar('Thêm vào danh mục thành công!', {
+      variant: 'success',
+      autoHideDuration: 1000,
+    });
+    refetch();
+    setSelection([]);
+  };
+  const onError2 = () => {
+    enqueueSnackbar('Thêm thất bại', {
+      variant: 'error',
+    });
+  };
+
+  const { data: dataPort, isSuccess: isSuccessProd } = useQuery(
+    ['portfolios'],
+    fetchingPortfolios
+  );
+
   const { mutate } = useDeleteProd({ onSuccess, onError });
+  const { mutate:mutateAddProdToPortf } = useAddProd2Portf({ onSuccess:onSuccess2, onError:onError2 });
 
   useEffect(() => {
     if (isSuccess) {
@@ -77,6 +117,41 @@ export default function ProductList() {
       idlist,
     });
   };
+
+  const handleOpenPopupPortfolio = (idList: number[]) => {
+    setIdListAddToPortf(idList);
+    setOpenPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setOpenPopup(false);
+  };
+
+  const handleAddToPortfolio = () => {
+    const params={
+      id: getValues('portfolio'),
+      idListProduct:idListAddtoPortf
+    }
+    mutateAddProdToPortf(params)
+  };
+
+  useEffect(() => {
+    if (isSuccessProd) {
+      const optionsTemp = dataPort.data.map((item: any) => {
+        return {
+          label: item.name,
+          value: item.id,
+        };
+      });
+      setdataPortOptions(optionsTemp);
+      methods.reset({
+        portfolio: optionsTemp[0]?.value
+      })
+    }
+  }, [isSuccessProd, dataPort?.data]);
+
+  console.log(getValues());
+
   const ProductImageColumn = (props: any) => (
     <DataTypeProvider
       for={['image']}
@@ -96,27 +171,72 @@ export default function ProductList() {
 
   return (
     <>
-      <Paper>
-        <Grid rows={rows} columns={columns}>
-          <SearchState />
-          <SelectionState
-            selection={selection}
-            onSelectionChange={setSelection as (selection: (string | number)[]) => void}
-          />
-          <Toolbar
-            rootComponent={() =>
-              ToolbarCustom({ selection, handleEditRow, handleDeleteRows })
-            }
-          />
-          <ProductImageColumn />
-          <IntegratedSelection />
-          <IntegratedFiltering />
-          <VirtualTable />
-          <TableHeaderRow />
-          <TableSelection showSelectAll />
-          <SearchPanel />
-        </Grid>
-      </Paper>
+      <FormProvider methods={methods}>
+        <Paper>
+          <Grid rows={rows} columns={columns}>
+            <SearchState />
+            <SelectionState
+              selection={selection}
+              onSelectionChange={setSelection as (selection: (string | number)[]) => void}
+            />
+            <Toolbar
+              rootComponent={() =>
+                ToolbarCustom({
+                  selection,
+                  handleEditRow,
+                  handleDeleteRows,
+                  handleOpenPopupPortfolio,
+                })
+              }
+            />
+            <ProductImageColumn />
+            <IntegratedSelection />
+            <IntegratedFiltering />
+            <VirtualTable />
+            <TableHeaderRow />
+            <TableSelection showSelectAll />
+            <SearchPanel />
+          </Grid>
+        </Paper>
+        <Popup open={openPopup}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              flexDirection: 'column',
+              gap: '10px',
+            }}
+          >
+            <RHFSelect name="portfolio" label="Portfolio">
+              {portfolioOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </RHFSelect>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px',
+              }}
+            >
+              <Button onClick={handleClosePopup}>Cancel</Button>
+              <Button
+                onClick={handleAddToPortfolio}
+                sx={{
+                  backgroundColor: 'transparent',
+                }}
+              >
+                Confirm
+              </Button>
+            </Box>
+          </Box>
+        </Popup>
+      </FormProvider>
     </>
   );
 }
