@@ -32,12 +32,11 @@ export default function EditProduct() {
     formState: { isSubmitting },
     setValue,
     getValues,
-    watch
+    watch,
   } = methods;
 
-  const { data, error, isError, isLoading, isSuccess } = useQuery(
-    [`product/${id}`],
-    () => fetchingProductById(id)
+  const { data, error, isError, isLoading, isSuccess } = useQuery([`product/${id}`], () =>
+    fetchingProductById(id)
   );
 
   const { enqueueSnackbar } = useSnackbar();
@@ -55,7 +54,6 @@ export default function EditProduct() {
   };
 
   const { mutate } = useUpdateProd({ onSuccess, onError });
-
 
   const { data: dataSup, isSuccess: isSuccessSup } = useQuery(
     ['suppliers'],
@@ -77,9 +75,9 @@ export default function EditProduct() {
   useEffect(() => {
     if (isSuccess) {
       setDataEdit(data.data);
-      methods.reset({...data.data, supplier:data.data.supplier.id});
+      methods.reset({ ...data.data, supplier: data.data.supplier.id });
     }
-  }, [isSuccess,data?.data]);
+  }, [isSuccess, data?.data]);
 
   const handleClickCancel = () => {
     navigate(PATH_DASHBOARD.general.product.root);
@@ -92,7 +90,7 @@ export default function EditProduct() {
       price: +getValues('price'),
       idSup: +getValues('supplier'),
     };
-    console.log(dataAdd,'dataAdd');
+    console.log(dataAdd, 'dataAdd');
     mutate(dataAdd);
   };
 
