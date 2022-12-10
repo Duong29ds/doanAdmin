@@ -1,4 +1,3 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -9,19 +8,17 @@ import {
   RHFSelect,
   RHFTextField,
   RHFUploadMultiFile,
-  RHFUploadSingleFile,
 } from 'src/common/components/hook-form';
 import Label from 'src/common/components/Label';
 import { usePresignImg } from 'src/common/hooks/usePresignImg';
+import { fetchingPortfolios } from 'src/portfolio/service';
 import { useAddProd } from 'src/product/hook/useAddProd';
-import { fetchingProducts } from 'src/product/service';
 import { fetchingSuppliers } from 'src/supply/service';
-import { getJSDocClassTag } from 'typescript';
 import { initialValues, styleButton, styleInput } from '../../constants';
 import { IAddProduct, IFormProfuctValuesProps, IOptions } from '../../interface';
 
 export default function AddProduct() {
-  const [productOptions, setDataProdOptions] = useState<IOptions[]>([]);
+  const [portfolioOptions, setdataPortOptions] = useState<IOptions[]>([]);
   const [SupplierOptions, setDataSupOptions] = useState<IOptions[]>([]);
   const methods = useForm<IFormProfuctValuesProps>({
     defaultValues: initialValues,
@@ -34,9 +31,9 @@ export default function AddProduct() {
     getValues,
   } = methods;
 
-  const { data: dataProd, isSuccess: isSuccessProd } = useQuery(
-    ['products'],
-    fetchingProducts
+  const { data: dataPort, isSuccess: isSuccessProd } = useQuery(
+    ['portfolios'],
+    fetchingPortfolios
   );
 
   const { data: dataSup, isSuccess: isSuccessSup } = useQuery(
@@ -62,16 +59,16 @@ export default function AddProduct() {
 
   useEffect(() => {
     if (isSuccessProd) {
-      const optionsTemp = dataProd.data.map((item: any) => {
+      const optionsTemp = dataPort.data.map((item: any) => {
         return {
           label: item.name,
           value: item.id,
         };
       });
-      setDataProdOptions(optionsTemp);
+      setdataPortOptions(optionsTemp);
       setValue('portfolio', optionsTemp[0]?.value);
     }
-  }, [isSuccessProd, dataProd?.data]);
+  }, [isSuccessProd, dataPort?.data]);
 
   useEffect(() => {
     if (isSuccessSup) {
@@ -177,7 +174,7 @@ export default function AddProduct() {
           <RHFTextField name="name" label="Name" sx={styleInput} />
           <RHFTextField name="description" label="Description" sx={styleInput} />
           <RHFSelect name="portfolio" label="Portfolio">
-            {productOptions.map((option) => (
+            {portfolioOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

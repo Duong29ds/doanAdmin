@@ -7,7 +7,6 @@ import {
   Card,
   Stack,
   Link,
-  Alert,
   Tooltip,
   Container,
   Typography,
@@ -15,9 +14,9 @@ import {
 import useAuth from 'src/common/hooks/useAuth';
 import Page from 'src/common/components/Page';
 import Image from 'src/common/components/Image';
-import LoginForm from './component/LoginForm';
 import { PATH_AUTH } from 'src/common/routes/paths';
 import useResponsive from 'src/common/hooks/useResponsive';
+import SignupForm from './component/SignupForm';
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -73,7 +72,7 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to System
+                  Sign up for System
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>
                   Enter your details below.
@@ -91,12 +90,8 @@ export default function Login() {
               </Tooltip>
             </Stack>
 
-            <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>duong1@ptit.edu.vn</strong> / password :
-              <strong>abc123!</strong>
-            </Alert>
 
-            <LoginForm />
+            <SignupForm />
 
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>

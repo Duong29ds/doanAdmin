@@ -1,4 +1,4 @@
-import React, { ComponentType, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Grid,
@@ -13,12 +13,8 @@ import {
   SearchState,
   IntegratedSelection,
   IntegratedFiltering,
-  DataTypeProvider,
 } from '@devexpress/dx-react-grid';
-import { Box, Button } from '@mui/material';
-import { styleButton } from 'src/product/constants';
 import ToolbarCustom from './table/ToolbarCustom';
-import { DropzoneRootProps } from 'react-dropzone';
 import { dispatch } from 'src/common/redux/store';
 import { useQuery } from 'react-query';
 import { fetchingSuppliers } from 'src/supply/service';
@@ -64,6 +60,8 @@ export default function SupplyList() {
   useEffect(() => {
     if (isSuccess) dispatch(setRows(data.data));
   }, [isSuccess, data?.data]);
+
+  console.log(rows,'rows');
 
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.general.supplier.edit(id));

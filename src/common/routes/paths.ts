@@ -12,6 +12,7 @@ const ROOTS_DASHBOARD = '/dashboard';
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
   login: path(ROOTS_AUTH, '/login'),
+  signup: path(ROOTS_AUTH, '/signup'),
   register: path(ROOTS_AUTH, '/register'),
   loginUnprotected: path(ROOTS_AUTH, '/login-unprotected'),
   registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
