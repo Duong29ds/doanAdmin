@@ -4,17 +4,13 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  FormProvider,
-  RHFSelect,
-  RHFTextField,
-} from 'src/common/components/hook-form';
+import { FormProvider, RHFSelect, RHFTextField } from 'src/common/components/hook-form';
 import Label from 'src/common/components/Label';
 import { PATH_DASHBOARD } from 'src/common/routes/paths';
 import { useUpdateProd } from 'src/product/hook/useUpdateProd';
 import { fetchingProductById } from 'src/product/service';
 import { initialValues, styleButton, styleInput } from '../../constants';
-import { IFormProfuctValuesProps } from '../../interface';
+import { IFormProfuctValuesProps, IUpdateProduct } from '../../interface';
 
 const optionsCategory = [
   { label: 'Keyboard', value: 'keyboard' },
@@ -71,7 +67,8 @@ export default function EditProduct() {
   };
 
   const handleSubmitEdit = () => {
-    mutate(getValues());
+    const data = getValues();
+    mutate(data);
   };
 
   return (

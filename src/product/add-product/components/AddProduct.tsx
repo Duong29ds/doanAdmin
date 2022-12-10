@@ -12,12 +12,13 @@ import {
   RHFUploadSingleFile,
 } from 'src/common/components/hook-form';
 import Label from 'src/common/components/Label';
+import { usePresignImg } from 'src/common/hooks/usePresignImg';
 import { useAddProd } from 'src/product/hook/useAddProd';
 import { fetchingProducts } from 'src/product/service';
 import { fetchingSuppliers } from 'src/supply/service';
 import { getJSDocClassTag } from 'typescript';
 import { initialValues, styleButton, styleInput } from '../../constants';
-import { IFormProfuctValuesProps, IOptions } from '../../interface';
+import { IAddProduct, IFormProfuctValuesProps, IOptions } from '../../interface';
 
 export default function AddProduct() {
   const [productOptions, setDataProdOptions] = useState<IOptions[]>([]);
@@ -68,7 +69,7 @@ export default function AddProduct() {
         };
       });
       setDataProdOptions(optionsTemp);
-      setValue('portfolio', optionsTemp[0].value);
+      setValue('portfolio', optionsTemp[0]?.value);
     }
   }, [isSuccessProd, dataProd?.data]);
 
@@ -81,7 +82,7 @@ export default function AddProduct() {
         };
       });
       setDataSupOptions(optionsTemp);
-      setValue('supplier', optionsTemp[0].value);
+      setValue('supplier', optionsTemp[0]?.value);
     }
   }, [isSuccessSup, dataSup?.data]);
 
@@ -91,17 +92,33 @@ export default function AddProduct() {
 
   const values = watch();
 
-  const removeAllArticleImgs = () => {
-    setValue('images', []);
-  };
-
-  const removeArticleImg = (file: File | string) => {
+  const removeImg = (file: File | string) => {
     const filteredItems =
       values.images && values.images?.filter((_file) => _file !== file);
     setValue('images', filteredItems);
   };
+  const removeAllImgs = () => {
+    setValue('images', []);
+  };
 
-  const handleDropArticleImgs = useCallback(
+  // const handleDrop = useCallback(
+  //   (acceptedFiles: File[]) => {
+  //     const file = acceptedFiles[0];
+
+  //     if (file) {
+  //       setValue(
+  //         'images',
+  //         Object.assign(file, {
+  //           preview: URL.createObjectURL(file),
+  //         })
+  //       );
+  //     }
+  //   },
+  //   [setValue]
+  // );
+  console.log(getValues('images'));
+
+  const handleDropImgs = useCallback(
     (acceptedFiles: File[]) => {
       const images = values.images || [];
       const file = acceptedFiles[0];
@@ -121,17 +138,23 @@ export default function AddProduct() {
     [setValue, values.images]
   );
 
-  const handleUploadImgs = () => {};
+  const { handleUpload } = usePresignImg();
 
-  const handleClickAdd = () => {
+  const handleClickAdd = async () => {
+    const image = getValues('images');
+    const url = await handleUpload(image as File[]);
+    console.log(url?.data);
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    const ids = url?.data?.map((item: any) => item?.id);
     const dataAdd = {
       ...getValues(),
       total: +getValues('total'),
       price: +getValues('price'),
       idSup: +getValues('supplier'),
       idListPortfolio: [+getValues('portfolio')],
+      images: ids,
     };
-    mutate(dataAdd);
+    mutate(dataAdd as IAddProduct);
   };
 
   return (
@@ -173,12 +196,11 @@ export default function AddProduct() {
           <RHFUploadMultiFile
             showPreview
             name="images"
-            maxSize={3145729}
-            onDrop={handleDropArticleImgs}
-            onRemove={removeArticleImg}
-            onRemoveAll={removeAllArticleImgs}
-            onUpload={handleUploadImgs}
+            onDrop={handleDropImgs}
+            onRemove={removeImg}
+            onRemoveAll={removeAllImgs}
           />
+          {/* <RHFUploadSingleFile name="images" onDrop={handleDrop} /> */}
         </Box>
         <Box sx={{ display: 'flex', gap: '10px', padding: '0px 10px' }}>
           <Button sx={styleButton} onClick={handleClickAdd}>
